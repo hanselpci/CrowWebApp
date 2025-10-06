@@ -54,7 +54,7 @@ int Server::getPort() const {
 // Sets up all the routes
 void Server::setupRoutes() {
     // API endpoint for addition
-    CROW_ROUTE(app_, CommonConst::ADDITION_ENDPOINT)
+    CROW_ROUTE(app_, "/api/add")
         .methods("POST"_method)([this](const crow::request& req) {
             return apiHandler_.handleAddition(req);
         });
@@ -63,13 +63,17 @@ void Server::setupRoutes() {
     CROW_ROUTE(app_, "/<path>")
         .methods("GET"_method)([](const std::string& path) {
             std::string fullPath = CommonConst::WEB_RESOURCES_PATH + path;
-            return crow::response(crow::status::OK, crow::mime_type::from_file(fullPath), crow::read_file(fullPath));
+            crow::response res;
+            res.set_static_file_info(fullPath);
+            return res;
         });
 
     // Default route to serve index.html
     CROW_ROUTE(app_, "/")
         .methods("GET"_method)([]() {
             std::string indexPath = CommonConst::WEB_RESOURCES_PATH + "index.html";
-            return crow::response(crow::status::OK, crow::mime_type::from_file(indexPath), crow::read_file(indexPath));
+            crow::response res;
+            res.set_static_file_info(indexPath);
+            return res;
         });
 }

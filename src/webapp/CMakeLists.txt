@@ -22,7 +22,7 @@ add_executable(webapp
 
 target_include_directories(webapp PRIVATE ${COMMON_INCLUDE_DIRS})
 target_link_libraries(webapp PRIVATE webview::core_static)
-target_compile_options(webserver PRIVATE ${CROW_COMPILE_OPTS} ${ASIO_COMPILE_OPTS})
+target_compile_options(webapp PRIVATE ${CROW_COMPILE_OPTS} ${ASIO_COMPILE_OPTS} ${WEBVIEW_COMPILE_OPTS})
 
 # Copy web resources to build directory for Debug builds
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

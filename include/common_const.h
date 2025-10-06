@@ -11,9 +11,6 @@ namespace CommonConst {
     // Default web server address
     const std::string WEB_ADDRESS = "127.0.0.1";
 
-    // API endpoint for addition
-    const std::string ADDITION_ENDPOINT = "/api/add";
-
     // Path to web resources
     const std::string WEB_RESOURCES_PATH = "web/";
 }
