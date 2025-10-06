@@ -26,43 +26,6 @@ file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 #     endif()
 # endfunction()
 
-# include(${CMAKE_SOURCE_DIR}/cmake/CPM.cmake)
-
-
-# # asio library for crow lib
-# CPMAddPackage(
-#     NAME asio
-#     VERSION 1.36.0
-#     URL https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-36-0.zip
-#     URL_HASH MD5=fc5e68a8a124f5cde0147329faeec126
-#     DOWNLOAD_ONLY   # only use asio.hpp
-# )
-
-# if(asio_ADDED)
-# CPMAddPackage(
-#     NAME Crow
-#     VERSION 1.2.1.2
-#     URL https://github.com/CrowCpp/Crow/releases/download/v1.2.1.2/crow_all.h
-#     URL_HASH MD5=9c94cfb884039e0e1c5bda09bde22795
-#     DOWNLOAD_ONLY   # only use crow_all.hpp
-#     DOWNLOAD_NO_EXTRACT=TRUE
-#     DOWNLOAD_NO_PROGRESS=TRUE
-# )
-# else()
-#   message(ERROR "Asio not found")
-# endif()
-
-# # webviewlibrary
-# CPMAddPackage(
-#     NAME webview
-#     VERSION 0.12.0
-#     URL https://github.com/webview/webview/archive/refs/tags/0.12.0.zip
-#     URL_HASH MD5=f2d7eba372417fe37c98be15c0237922
-#     OPTIONS
-#     "WEBVIEW_BUILD_SHARED_LIBRARY Off"
-# )
-
-
 include(FetchContent)
 
 # avoid warning when using FetchContent by URL
@@ -87,9 +50,6 @@ FetchContent_Declare(
     URL_MD5 fc5e68a8a124f5cde0147329faeec126
 )
 FetchContent_MakeAvailable(asio)
-
-#let crow find asio library
-set(ASIO_INCLUDE_DIR ${asio_SOURCE_DIR}/asio/include)
 
 # crow library
 # using URL instead of GIT_REPOSITORY to avoid big size of git repo
