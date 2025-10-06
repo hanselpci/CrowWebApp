@@ -34,9 +34,9 @@ endif()
 
 # Enable console window on Windows if building in Debug mode
 # Remove console window on Windows if building in Release mode
-# if (MSVC)
-#     set_target_properties(webclient PROPERTIES
-#         LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE"
-#         LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup"
-#     )
-# endif()
+if (MSVC)
+    set_target_properties(webapp PROPERTIES
+        LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE"
+        LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup"
+    )
+endif()
