@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(BUILD_WEBCLIENT "Build web client app" ON)
-option(BUILD_WEBSERVER "Build web server app" OFF)
-option(BUILD_WEBAPP "Build web app" OFF)
+option(BUILD_WEBSERVER "Build web server app" ON)
+option(BUILD_WEBAPP "Build web app" ON)
 
 # Configure build types
 if(NOT CMAKE_BUILD_TYPE)
@@ -110,5 +110,21 @@ set(COMMON_INCLUDE_DIRS
 # pack web resources to web_resources.cpp
 include(${CMAKE_SOURCE_DIR}/cmake/pack_res.cmake)
 
+# Common source files
+set(COMMON_SOURCES
+    ${CMAKE_SOURCE_DIR}/src/common/server.cpp
+    ${CMAKE_SOURCE_DIR}/src/common/api_handler.cpp
+)
+
 # Add subdirectories
-add_subdirectory(src)
+if(BUILD_WEBCLIENT)
+    add_subdirectory(src/webclient)
+endif()
+
+if(BUILD_WEBSERVER)
+    add_subdirectory(src/webserver)
+endif()
+
+if(BUILD_WEBAPP)
+    add_subdirectory(src/webapp)
+endif()
