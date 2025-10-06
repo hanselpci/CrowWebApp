@@ -5,6 +5,10 @@ project(WebAppDemo)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+option(BUILD_WEBCLIENT "Build web client app" ON)
+option(BUILD_WEBSERVER "Build web server app" OFF)
+option(BUILD_WEBAPP "Build web app" OFF)
+
 # Configure build types
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
