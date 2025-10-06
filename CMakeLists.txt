@@ -47,6 +47,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(webview)
 
+set(WEBVIEW_COMPILE_OPTS /wd4819)
+
 # asio library
 FetchContent_Declare(
     asio
@@ -54,6 +56,10 @@ FetchContent_Declare(
     URL_MD5 fc5e68a8a124f5cde0147329faeec126
 )
 FetchContent_MakeAvailable(asio)
+
+# For Asio standalone mode
+set(ASIO_COMPILE_OPTS -DASIO_STANDALONE -D_WIN32_WINNT=0x0A00)
+
 
 # crow library
 # using URL instead of GIT_REPOSITORY to avoid big size of git repo
@@ -65,6 +71,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(crow)
 
+# disable warning C4244 and C4267
+set(CROW_COMPILE_OPTS /wd4244 /wd4267)
+
 # Include directories
 set(COMMON_INCLUDE_DIRS
     ${CMAKE_SOURCE_DIR}/include
@@ -73,8 +82,6 @@ set(COMMON_INCLUDE_DIRS
     ${crow_SOURCE_DIR}
 )
 
-# For Asio standalone mode
-set(ASIO_COMPILE_OPTS -DASIO_STANDALONE -D_WIN32_WINNT=0x0A00)
 
 # Collect all web files and generate embedded_resources.cpp
 file(GLOB_RECURSE WEB_FILES ${CMAKE_SOURCE_DIR}/web/*)

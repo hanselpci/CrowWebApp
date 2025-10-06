@@ -5,6 +5,7 @@ add_executable(webserver
     ${COMMON_SOURCES}
 )
 
+target_compile_options(webserver PRIVATE ${CROW_COMPILE_OPTS} ${ASIO_COMPILE_OPTS})
 target_include_directories(webserver PRIVATE ${COMMON_INCLUDE_DIRS})
 
 # Copy web resources to build directory for Debug builds
