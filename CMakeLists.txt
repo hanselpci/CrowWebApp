@@ -82,39 +82,26 @@ set(COMMON_INCLUDE_DIRS
     ${crow_SOURCE_DIR}
 )
 
-
-# Collect all web files and generate embedded_resources.cpp
-# file(GLOB_RECURSE WEB_FILES ${CMAKE_SOURCE_DIR}/web/*)
-
-# # Create a C++ source file with embedded resources
-# set(EMBEDDED_RESOURCES ${CMAKE_BINARY_DIR}/embedded_resources.cpp)
-# file(WRITE ${EMBEDDED_RESOURCES}
-#     "#include <map>\n#include <string>\nstd::map<std::string, std::string> embedded_resources = {\n")
-
-# # Add each file to the map
-# foreach(FILE ${WEB_FILES})
-#     # Get relative path
-#     file(RELATIVE_PATH REL_PATH ${CMAKE_SOURCE_DIR}/web ${FILE})
-
-#     # Read file content and escape
-#     file(READ ${FILE} CONTENT HEX)
-#     string(REGEX REPLACE "([0-9a-f][0-9a-f])" "0x\\1," CONTENT ${CONTENT})
-
-#     # Add to resources
-#     file(APPEND ${EMBEDDED_RESOURCES}
-#         "    {\"${REL_PATH}\", std::string(reinterpret_cast<const char*>(new unsigned char[] {${CONTENT}}))},\n")
-# endforeach()
-
-# file(APPEND ${EMBEDDED_RESOURCES} "};")
-
+# NOT used due to no dependency on web files
 # pack web resources to web_resources.cpp
-include(${CMAKE_SOURCE_DIR}/cmake/pack_res.cmake)
+# include(${CMAKE_SOURCE_DIR}/cmake/pack_res.cmake)
 
 # Common source files
 set(COMMON_SOURCES
     ${CMAKE_SOURCE_DIR}/src/common/server.cpp
     ${CMAKE_SOURCE_DIR}/src/common/api_handler.cpp
 )
+
+add_library(WebAppDemo STATIC ${COMMON_SOURCES})
+target_include_directories(WebAppDemo PRIVATE ${COMMON_INCLUDE_DIRS})
+
+# not working for install binfs, add binfs source code directly
+#include(${CMAKE_SOURCE_DIR}/cmake/binfs.cmake)
+
+# add binfs to target
+#add_dependencies(WebAppDemo binfs)
+
+add_subdirectory(3rd/binfs)
 
 # Add subdirectories
 if(BUILD_WEBCLIENT)

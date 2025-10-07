@@ -3,6 +3,8 @@
 add_executable(webclient
     webclient.cpp
 )
+
+target_compile_options(webclient PRIVATE ${WEBVIEW_COMPILE_OPTS})
 target_include_directories(webclient PRIVATE ${COMMON_INCLUDE_DIRS})
 target_link_libraries(webclient PRIVATE webview::core_static)
 
