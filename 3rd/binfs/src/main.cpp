@@ -100,13 +100,19 @@ int main(int argc, char *argv[])
   {
     files = get_files(path, files);
   }
+  try {
+    for (const std::string &path : files)
+    {
+      binfs->add_file(path);
+    }
 
-  for (const std::string &path : files)
-  {
-    binfs->add_file(path);
-  }
-
-  binfs->output_hpp_file(outfile);
+    binfs->output_hpp_file(outfile);
 
   return 0;
+  }
+  catch (const std::runtime_error &e)
+  {
+    printf("Error: %s\n", e.what());
+    return 1;
+  }
 }
