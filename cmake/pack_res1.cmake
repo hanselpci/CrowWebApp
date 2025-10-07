@@ -1,4 +1,12 @@
 
+# Function to download a file if it doesn't exist
+# function(download_file url dest)
+#     if(NOT EXISTS ${dest})
+#         message(STATUS "Downloading ${url} to ${dest}")
+#         file(DOWNLOAD ${url} ${dest} SHOW_PROGRESS)
+#     endif()
+# endfunction()
+
 set(RESOURCE_DIR ${CMAKE_SOURCE_DIR}/lib)
 set(EMBEDDED_RESOURCES ${CMAKE_BINARY_DIR}/web_resources.cpp)  # resource file
 set(WEB_DIR ${CMAKE_SOURCE_DIR}/web)                      # web directory to pack

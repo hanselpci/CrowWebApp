@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.10)
-project(WebAppDemo)
+cmake_minimum_required(VERSION 3.12)
+project(WebAppDemo VERSION 1.0 LANGUAGES CXX)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -8,11 +8,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 option(BUILD_WEBCLIENT "Build web client app" ON)
 option(BUILD_WEBSERVER "Build web server app" ON)
 option(BUILD_WEBAPP "Build web app" ON)
+option(PACK_WEB_FOR_WEBAPP "Pack web resources for webapp" ON)
 
-# Configure build types
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
-endif()
+message(STATUS "BUILD_WEBCLIENT: ${BUILD_WEBCLIENT}")
+message(STATUS "BUILD_WEBSERVER: ${BUILD_WEBSERVER}")
+message(STATUS "BUILD_WEBAPP: ${BUILD_WEBAPP}")
+message(STATUS "PACK_WEB_FOR_WEBAPP: ${PACK_WEB_FOR_WEBAPP}")
 
 # Set output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -22,13 +23,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 
-# Function to download a file if it doesn't exist
-# function(download_file url dest)
-#     if(NOT EXISTS ${dest})
-#         message(STATUS "Downloading ${url} to ${dest}")
-#         file(DOWNLOAD ${url} ${dest} SHOW_PROGRESS)
-#     endif()
-# endfunction()
+set(TOOL_BIN_DIR ${PROJECT_BINARY_DIR}/bin)
 
 include(FetchContent)
 
@@ -91,17 +86,6 @@ set(COMMON_SOURCES
     ${CMAKE_SOURCE_DIR}/src/common/server.cpp
     ${CMAKE_SOURCE_DIR}/src/common/api_handler.cpp
 )
-
-add_library(WebAppDemo STATIC ${COMMON_SOURCES})
-target_include_directories(WebAppDemo PRIVATE ${COMMON_INCLUDE_DIRS})
-
-# not working for install binfs, add binfs source code directly
-#include(${CMAKE_SOURCE_DIR}/cmake/binfs.cmake)
-
-# add binfs to target
-#add_dependencies(WebAppDemo binfs)
-
-add_subdirectory(3rd/binfs)
 
 # Add subdirectories
 if(BUILD_WEBCLIENT)

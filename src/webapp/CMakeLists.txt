@@ -1,32 +1,26 @@
+
 # For Release builds, we'll embed web resources
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    # Add embedded resources to webapp
-    set(WEBAPP_SOURCES
-        webapp.cpp
-        ${COMMON_SOURCES}
-        ${EMBEDDED_RESOURCES}
-    )
+if(PACK_WEB_FOR_WEBAPP)
+    set(WEB_FILES_DIR ${CMAKE_SOURCE_DIR}/web)
+    set(WEB_RESOURCES_HPP ${CMAKE_BINARY_DIR}/lib/web_resources.hpp)
+    # pack web resources to web_resources.cpp
+    add_subdirectory(${CMAKE_SOURCE_DIR}/3rd/binfs ${CMAKE_BINARY_DIR}/binfs)
+
+    add_executable(webapp ${WEB_RESOURCES_HPP} ${COMMON_SOURCES} webapp.cpp)
+
+    include(${CMAKE_SOURCE_DIR}/cmake/pack_web.cmake)
+    add_dependencies(webapp binfs pack_web)
 else()
-    # For Debug builds, use regular files
-    set(WEBAPP_SOURCES
-        webapp.cpp
-        ${COMMON_SOURCES}
-    )
+    # use regular files
+    add_executable(webapp webapp.cpp ${COMMON_SOURCES})
 endif()
-
-
-# Combined web application executable
-add_executable(webapp
-    ${WEBAPP_SOURCES}
-)
 
 target_include_directories(webapp PRIVATE ${COMMON_INCLUDE_DIRS})
 target_link_libraries(webapp PRIVATE webview::core_static)
 target_compile_options(webapp PRIVATE ${CROW_COMPILE_OPTS} ${ASIO_COMPILE_OPTS} ${WEBVIEW_COMPILE_OPTS})
 
-# Copy web resources to build directory for Debug builds
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-
+# Copy web resources to build directory
+if(NOT PACK_WEB_FOR_WEBAPP)
     add_custom_command(TARGET webapp POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/web $<TARGET_FILE_DIR:webapp>/web)
