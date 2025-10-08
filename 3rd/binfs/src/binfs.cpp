@@ -3,7 +3,7 @@
 namespace BinFS
 {
 
-  BinFS::BinFS(std::string dirpath_) : dirpath(dirpath_) {};
+  BinFS::BinFS(std::string base_dir_) : base_dir(base_dir_) {};
 
   BinFS::~BinFS() {};
 
@@ -56,8 +56,8 @@ namespace BinFS
 
     if (!is_absolute_path(filename))
     {
-      dirpath = dirpath == "" ? "./" : dirpath + "/";
-      filepath = dirpath + filename;
+      base_dir = base_dir == "" ? "./" : base_dir + "/";
+      filepath = base_dir + filename;
     }
     else
     {

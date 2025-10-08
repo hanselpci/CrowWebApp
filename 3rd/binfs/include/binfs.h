@@ -12,26 +12,26 @@
 namespace BinFS
 {
 
-class BinFS
-{
-private:
-  std::string dirpath;
-  std::vector<std::pair<std::string, std::string>> files;
+  class BinFS
+  {
+  private:
+    std::string base_dir;
+    std::vector<std::pair<std::string, std::string>> files;
 
-  bool file_exists(const std::string &filename);
-  std::string read_file(const std::string &filename);
-  std::string string_to_hex(const std::string &in);
-  std::string hex_to_string(const std::string &in);
+    bool file_exists(const std::string &filename);
+    std::string read_file(const std::string &filename);
+    std::string string_to_hex(const std::string &in);
+    std::string hex_to_string(const std::string &in);
 
-public:
-  BinFS(std::string dirpath_ = "");
-  ~BinFS();
+  public:
+    BinFS(std::string base_dir_ = "");
+    ~BinFS();
 
-  void add_file(const std::string &filename);
-  void remove_file(const std::string &filename);
-  std::string get_file(const std::string &filename);
-  void output_hpp_file(const std::string &filename);
-};
+    void add_file(const std::string &filename);
+    void remove_file(const std::string &filename);
+    std::string get_file(const std::string &filename);
+    void output_hpp_file(const std::string &filename);
+  };
 
 } // BinFS
 
