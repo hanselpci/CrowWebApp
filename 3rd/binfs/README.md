@@ -58,7 +58,6 @@ To access asset data, we use the `binfs->get_file(filepath);` function which is 
 int main()
 {
   BinFS::BinFS *binfs = new BinFS::BinFS();
-  binfs->init(); // load the files
 
   std::string txt_file = binfs->get_file("data/CMakeLists.txt");
   std::string video_file = binfs->get_file("/path/to/my_video.mp4");
