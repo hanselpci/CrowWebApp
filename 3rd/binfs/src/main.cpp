@@ -11,6 +11,8 @@
 #else
 #include <3rdparty/win32/dirent.h>
 #endif
+
+#include "cmdline.h"
 #include "binfs.h"
 
 std::vector<std::string> get_files(const std::string &path, std::vector<std::string> &paths)
@@ -45,62 +47,27 @@ std::vector<std::string> get_files(const std::string &path, std::vector<std::str
   return paths;
 }
 
-std::string parse_output_file(int argc, char *argv[])
-{
-  std::string output_file("binfs.hpp");
-  for (int i = 1; i < argc; i++)
-  {
-    std::string arg(argv[i], strlen(argv[i]));
-    if (arg == "-outfile" && (argc > i + 1))
-    {
-      output_file = argv[i + 1];
-      continue;
-    }
-  }
-
-  return output_file;
-}
-
-std::vector<std::string> parse_folders(int argc, char *argv[])
-{
-  std::vector<std::string> files;
-  for (int i = 1; i < argc; i++)
-  {
-    std::string curr_arg(argv[i], strlen(argv[i]));
-    std::string prev_arg(argv[i - 1], strlen(argv[i - 1]));
-    if (curr_arg != "-outfile" && prev_arg != "-outfile")
-    {
-      files.push_back(argv[i]);
-    }
-  }
-
-  return files;
-}
-
-void usage(const char *progname)
-{
-  printf("Usage examples: \n  %s data/\n  %s -outfile include/binfs.hpp data/ /full/path/to/file.mp4\n\n", progname, progname);
-  exit(1);
-}
-
 int main(int argc, char *argv[])
 {
-  if (argc < 2)
-  {
-    usage(argv[0]);
-  }
+  cmdline::parser arg_parser;
+  arg_parser.add<std::string>("outfile", 'o', "output file name", false, "binfs.hpp");
+  arg_parser.add<std::string>("base_dir", 'b', "base directory to create relative path", false, "./");
+  arg_parser.parse_check(argc, argv);
 
-  BinFS::BinFS *binfs = new BinFS::BinFS();
+  std::string outfile = arg_parser.get<std::string>("outfile");
+  std::string base_dir = arg_parser.get<std::string>("base_dir");
+  std::vector<std::string> folders = arg_parser.rest();
 
-  std::vector<std::string> folders = parse_folders(argc, argv);
-  std::string outfile = parse_output_file(argc, argv);
+  BinFS::BinFS *binfs = new BinFS::BinFS(base_dir);
+
   std::vector<std::string> files;
 
   for (const std::string &path : folders)
   {
     files = get_files(path, files);
   }
-  try {
+  try
+  {
     for (const std::string &path : files)
     {
       binfs->add_file(path);
@@ -108,7 +75,7 @@ int main(int argc, char *argv[])
 
     binfs->output_hpp_file(outfile);
 
-  return 0;
+    return 0;
   }
   catch (const std::runtime_error &e)
   {
