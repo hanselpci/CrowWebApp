@@ -131,7 +131,7 @@ namespace BinFS
     throw std::runtime_error(filename + " not found!");
   }
 
-  void BinFS::output_hpp_file(const std::string &filename)
+  void BinFS::output_hpp_file(const std::string &filename, int chunk_size)
   {
     std::ofstream out;
     out.open(filename);
@@ -172,7 +172,7 @@ namespace BinFS
     out << "    return output;" << std::endl;
     out << "  }" << std::endl;
     out << "public:" << std::endl;
-    out << "  BinFS() {};" << std::endl;
+    out << "  BinFS() { init(); };" << std::endl;
     out << "  ~BinFS() {};" << std::endl;
     out << "  std::string get_file(const std::string &filename)" << std::endl;
     out << "  {" << std::endl;
@@ -191,7 +191,21 @@ namespace BinFS
     out << "  {" << std::endl;
     for (const std::pair<std::string, std::string> &file : files)
     {
-      out << "    files.emplace_back(\"" << PathUtils::getRelativePath(base_dir, file.first) << "\",\"" << file.second << "\");" << std::endl;
+      out << "    files.emplace_back(\"" << PathUtils::getRelativePath(base_dir, file.first) << "\",\n";
+      if (file.second.length() != 0)
+      {
+        for (size_t i = 0; file.second.length() > i; i += chunk_size)
+        {
+          out << "\"";
+          out << file.second.substr(i, chunk_size);
+          out << "\"\n";
+        }
+      }
+      else
+      {
+        out << "\"\"";
+      }
+      out << ");" << std::endl;
     }
     out << "  }" << std::endl;
     out << "};" << std::endl;

@@ -11,6 +11,7 @@
 
 namespace BinFS
 {
+  const int BINFS_CHUNK_SIZE = 78;
 
   class BinFS
   {
@@ -30,7 +31,7 @@ namespace BinFS
     void add_file(const std::string &filename);
     void remove_file(const std::string &filename);
     std::string get_file(const std::string &filename);
-    void output_hpp_file(const std::string &filename);
+    void output_hpp_file(const std::string &filename, int chunk_size = BINFS_CHUNK_SIZE);
   };
 
 } // BinFS

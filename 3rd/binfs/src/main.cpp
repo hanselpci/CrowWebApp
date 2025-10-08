@@ -52,10 +52,13 @@ int main(int argc, char *argv[])
   cmdline::parser arg_parser;
   arg_parser.add<std::string>("outfile", 'o', "output file name", false, "binfs.hpp");
   arg_parser.add<std::string>("base_dir", 'b', "base directory to create relative path", false, "");
+  arg_parser.add<int>("chunk_size", 'c', "chunk size in bytes", false, BinFS::BINFS_CHUNK_SIZE);
   arg_parser.parse_check(argc, argv);
 
   std::string outfile = arg_parser.get<std::string>("outfile");
   std::string base_dir = arg_parser.get<std::string>("base_dir");
+  int chunk_size = arg_parser.get<int>("chunk_size");
+
   std::vector<std::string> folders = arg_parser.rest();
 
   BinFS::BinFS *binfs = new BinFS::BinFS(base_dir);
