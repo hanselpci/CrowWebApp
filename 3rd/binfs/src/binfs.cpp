@@ -1,48 +1,18 @@
 #include "binfs.h"
+#include "path_utils.h"
 
 namespace BinFS
 {
-
-  BinFS::BinFS(std::string base_dir_) : base_dir(base_dir_) {};
+  BinFS::BinFS(std::string base_dir_)
+  {
+    base_dir = base_dir_;
+    if (base_dir.empty() || base_dir == "")
+      base_dir = PathUtils::getCurrentDirectory() + "/";
+    else
+      base_dir = PathUtils::getAbsolutePath(base_dir);
+  };
 
   BinFS::~BinFS() {};
-
-  bool is_absolute_path(const std::string &path)
-  {
-    if (path.empty())
-      return false;
-
-#ifdef _WIN32
-    // Check driver letter if the path is absolute on Windows
-    if (path.length() >= 3)
-    {
-      bool hasDriveLetter = std::isalpha(static_cast<unsigned char>(path[0])) && path[1] == ':';
-      bool hasSeparator = path[2] == '\\' || path[2] == '/';
-
-      if (hasDriveLetter && hasSeparator)
-      {
-        return true;
-      }
-    }
-
-    // Check UNC path (\\server\share)
-    if (path.length() >= 2 && path[0] == '\\' && path[1] == '\\')
-    {
-      return true;
-    }
-
-    // Check Unix-style path (e.g., /path/to/file)
-    if (path[0] == '/')
-    {
-      return true;
-    }
-
-    return false;
-#else
-    // Check Unix-style path (e.g., /path/to/file)
-    return path[0] == '/';
-#endif
-  }
 
   bool BinFS::file_exists(const std::string &filename)
   {
@@ -53,11 +23,12 @@ namespace BinFS
   std::string BinFS::read_file(const std::string &filename)
   {
     std::string filepath;
-
-    if (!is_absolute_path(filename))
+    // check if filename is absolute path
+    if (!PathUtils::isAbsolutePath(filename))
     {
-      base_dir = base_dir == "" ? "./" : base_dir + "/";
-      filepath = base_dir + filename;
+      // add current directory if it is not absolute path
+      std::string curr_dir = PathUtils::getCurrentDirectory();
+      filepath = curr_dir + filename;
     }
     else
     {
@@ -220,7 +191,7 @@ namespace BinFS
     out << "  {" << std::endl;
     for (const std::pair<std::string, std::string> &file : files)
     {
-      out << "    files.emplace_back(\"" << file.first << "\",\"" << file.second << "\");" << std::endl;
+      out << "    files.emplace_back(\"" << PathUtils::getRelativePath(base_dir, file.first) << "\",\"" << file.second << "\");" << std::endl;
     }
     out << "  }" << std::endl;
     out << "};" << std::endl;
