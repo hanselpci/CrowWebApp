@@ -5,7 +5,7 @@ set(PACK_WEB_TEST_SRC_FILE ${CMAKE_SOURCE_DIR}/3rd/binfs/test/pack_web_test.cpp)
 # find all web resources files
 file(GLOB_RECURSE WEB_RESOURCES  ${WEB_FILES_DIR}/*)
 
-set(PACK_WEB_CMD ${TOOL_BIN_DIR}/binfs --base_dir ${CMAKE_SOURCE_DIR} --outfile ${WEB_RESOURCES_HPP} ${WEB_FILES_DIR})
+set(PACK_WEB_CMD ${TOOL_BIN_DIR}/binfs --base_dir ${WEB_FILES_DIR} --outfile ${WEB_RESOURCES_HPP} ${WEB_FILES_DIR})
 
 # custom command: generate web.hpp from web resources
 add_custom_command(
