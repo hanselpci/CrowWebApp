@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 {
   cmdline::parser arg_parser;
   arg_parser.add<std::string>("outfile", 'o', "output file name", false, "binfs.hpp");
-  arg_parser.add<std::string>("base_dir", 'b', "base directory to create relative path", false, "./");
+  arg_parser.add<std::string>("base_dir", 'b', "base directory to create relative path", false, "");
   arg_parser.parse_check(argc, argv);
 
   std::string outfile = arg_parser.get<std::string>("outfile");
