@@ -7,11 +7,16 @@
 #include <string>
 #include <atomic>
 
+#if WEB_RESOURCE_PACKED == 1
+#include "web_resources.hpp"
+#endif
+
 // Web server class that handles HTTP requests and serves web content
-class Server {
+class Server
+{
 public:
     // Constructor with optional port specification
-    explicit Server(int port = CommonConst::WEB_PORT);
+    explicit Server(int port = CommonConst::WEB_PORT, std::string host = CommonConst::WEB_ADDRESS);
 
     // Destructor
     ~Server();
@@ -28,7 +33,13 @@ public:
     // Gets the port the server is running on
     int getPort() const;
 
+    // Gets the host address the server is bound to
+    std::string getAddress() const;
+
 private:
+#if WEB_RESOURCE_PACKED == 1
+    BinFS::BinFS *binfs = nullptr;
+#endif
     // Sets up all the routes for the server
     void setupRoutes();
 
@@ -40,6 +51,9 @@ private:
 
     // Port number
     int port_;
+
+    // Host address
+    std::string address_;
 
     // Flag indicating if server is running
     std::atomic<bool> isRunning_;

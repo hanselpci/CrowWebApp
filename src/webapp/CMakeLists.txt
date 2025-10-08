@@ -10,14 +10,16 @@ if(PACK_WEB_FOR_WEBAPP)
 
     include(${CMAKE_SOURCE_DIR}/cmake/pack_web.cmake)
     add_dependencies(webapp binfs pack_web)
+    set(PACK_WEB_OPT -DWEB_RESOURCE_PACKED=1)
 else()
     # use regular files
     add_executable(webapp webapp.cpp ${COMMON_SOURCES})
+    set(PACK_WEB_OPT -DWEB_RESOURCE_PACKED=0)
 endif()
 
 target_include_directories(webapp PRIVATE ${COMMON_INCLUDE_DIRS})
 target_link_libraries(webapp PRIVATE webview::core_static)
-target_compile_options(webapp PRIVATE ${CROW_COMPILE_OPTS} ${ASIO_COMPILE_OPTS} ${WEBVIEW_COMPILE_OPTS})
+target_compile_options(webapp PRIVATE ${CROW_COMPILE_OPTS} ${ASIO_COMPILE_OPTS} ${WEBVIEW_COMPILE_OPTS} ${PACK_WEB_OPT})
 
 # Copy web resources to build directory
 if(NOT PACK_WEB_FOR_WEBAPP)

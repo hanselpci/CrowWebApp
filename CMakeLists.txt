@@ -75,6 +75,7 @@ set(CROW_COMPILE_OPTS /wd4244 /wd4267)
 set(COMMON_INCLUDE_DIRS
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/lib
+    ${CMAKE_BINARY_DIR}/lib
     ${asio_SOURCE_DIR}/asio/include/
     ${crow_SOURCE_DIR}
 )
