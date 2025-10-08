@@ -50,14 +50,17 @@ std::vector<std::string> get_files(const std::string &path, std::vector<std::str
 int main(int argc, char *argv[])
 {
   cmdline::parser arg_parser;
-  arg_parser.add<std::string>("outfile", 'o', "output file name", false, "binfs.hpp");
+  arg_parser.add<std::string>("outfile", 'o', "output hppfile name", false, "binfs.hpp");
   arg_parser.add<std::string>("base_dir", 'b', "base directory to create relative path", false, "");
   arg_parser.add<int>("chunk_size", 'c', "chunk size in bytes", false, BinFS::BINFS_CHUNK_SIZE);
+  arg_parser.add<bool>("lite", 'l', "output lite version hpp file", false, false);
+
   arg_parser.parse_check(argc, argv);
 
   std::string outfile = arg_parser.get<std::string>("outfile");
   std::string base_dir = arg_parser.get<std::string>("base_dir");
   int chunk_size = arg_parser.get<int>("chunk_size");
+  bool lite = arg_parser.get<bool>("lite");
 
   std::vector<std::string> folders = arg_parser.rest();
 
@@ -76,7 +79,14 @@ int main(int argc, char *argv[])
       binfs->add_file(path);
     }
 
-    binfs->output_hpp_file(outfile);
+    if (lite)
+    {
+      binfs->output_hpp_file_lite(outfile);
+    }
+    else
+    {
+      binfs->output_hpp_file(outfile);
+    }
 
     return 0;
   }

@@ -6,8 +6,8 @@ int main()
 {
     BinFS::BinFS *binfs = new BinFS::BinFS();
 
-    std::string file1 = binfs->get_file("web/index.html");
-    std::string file2 = binfs->get_file("web/script.js");
+    std::string file1 = binfs->get_file("index.html");
+    std::string file2 = binfs->get_file("script.js");
 
     // write output file
     std::ofstream output("out.html", std::fstream::binary);

@@ -14,11 +14,11 @@ file(GLOB_RECURSE SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 include_directories(${INCLUDE_DIRS})
 add_executable(binfs ${SOURCE_FILES})
 
-add_custom_command(
-    TARGET binfs
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-    $<TARGET_FILE:binfs> $<TARGET_FILE_DIR:binfs>/../binfs.exe
-)
+# add_custom_command(
+#     TARGET binfs
+#     POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy
+#     $<TARGET_FILE:binfs> $<TARGET_FILE_DIR:binfs>/../binfs.exe
+# )
 
 

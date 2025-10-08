@@ -216,4 +216,66 @@ namespace BinFS
     out << std::endl;
   }
 
+  void BinFS::output_hpp_file_lite(const std::string &filename, int chunk_size)
+  {
+    std::ofstream out;
+    out.open(filename);
+
+    out << "#ifndef _BINFS_OUTPUT_LITE_HPP_" << std::endl;
+    out << "#define _BINFS_OUTPUT_LITE_HPP_" << std::endl;
+    out << std::endl;
+
+    out << "#include <string>" << std::endl;
+    out << "#include <vector>" << std::endl;
+    out << std::endl;
+
+    out << "namespace BinFS" << std::endl;
+    out << "{" << std::endl;
+
+    out << "int bin_fs_initialized = 1; // initialized flag" << std::endl
+        << std::endl;
+    out << "  std::vector<std::pair<std::string, std::string>> bin_fs_files = {" << std::endl;
+
+    for (const std::pair<std::string, std::string> &file : files)
+    {
+      // a new file started
+      out << "    {\"" << PathUtils::getRelativePath(base_dir, file.first) << "\"," << std::endl;
+      if (file.second.length() != 0)
+      {
+        for (size_t i = 0; file.second.length() > i; i += chunk_size)
+        {
+          out << "\"";
+          out << file.second.substr(i, chunk_size);
+          out << "\"";
+          if (file.second.length() > i + chunk_size)
+          {
+            out << std::endl;
+          }
+          else
+          {
+            // last line of a string
+            out << "}";
+          }
+        }
+      }
+      else
+      {
+        out << "\"\"}";
+      }
+      if (file != files.back())
+      {
+        out << "," << std::endl;
+      }
+      else
+      {
+        // last file
+        out << std::endl;
+      }
+    }
+    out << "};" << std::endl;
+    out << "} // BinFS" << std::endl;
+    out << std::endl;
+    out << "#endif // _BINFS_OUTPUT_LITE_HPP_" << std::endl;
+    out << std::endl;
+  }
 } // BinFS
