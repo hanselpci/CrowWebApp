@@ -1,12 +1,21 @@
 
-set(PACK_WEB_TEST_FILE_NAME pack_web_test_lite.cpp)
+option(PACK_WEB_LITE "Pack web test lite" OFF)
+
+if (PACK_WEB_LITE)
+    set(PACK_WEB_TEST_FILE_NAME pack_web_test_lite.cpp)
+    set(BINFS_CMD_OPT --lite 1)
+else()
+    set(PACK_WEB_TEST_FILE_NAME pack_web_test.cpp)
+    set(BINFS_CMD_OPT --lite 0)
+endif()
+
 set(PACK_WEB_TEST_DST_FILE ${CMAKE_SOURCE_DIR}/build/lib/${PACK_WEB_TEST_FILE_NAME})
 set(PACK_WEB_TEST_SRC_FILE ${CMAKE_SOURCE_DIR}/3rd/binfs/test/${PACK_WEB_TEST_FILE_NAME})
 
 # find all web resources files
 file(GLOB_RECURSE WEB_RESOURCES  ${WEB_FILES_DIR}/*)
 
-set(PACK_WEB_CMD $<TARGET_FILE:binfs> --base_dir ${WEB_FILES_DIR} --outfile ${WEB_RESOURCES_HPP} --lite 1 ${WEB_FILES_DIR})
+set(PACK_WEB_CMD $<TARGET_FILE:binfs> --base_dir ${WEB_FILES_DIR} --outfile ${WEB_RESOURCES_HPP} ${BINFS_CMD_OPT} ${WEB_FILES_DIR})
 
 # custom command: generate web.hpp from web resources
 add_custom_command(
